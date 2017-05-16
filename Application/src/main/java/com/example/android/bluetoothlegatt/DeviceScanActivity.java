@@ -16,16 +16,22 @@
 
 package com.example.android.bluetoothlegatt;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v13.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,10 +57,24 @@ public class DeviceScanActivity extends ListActivity {
     // Stops scanning after 10 seconds.
     private static final long SCAN_PERIOD = 10000;
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().setTitle(R.string.title_devices);
+        int permissionCheck = ContextCompat.checkSelfPermission(DeviceScanActivity.this,Manifest.permission.ACCESS_COARSE_LOCATION);
+        if(permissionCheck!=PackageManager.PERMISSION_GRANTED){
+            Log.e("Perms!!!","perms was not granted");
+            ActivityCompat.requestPermissions(DeviceScanActivity.this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    1);
+
+        }
+        else{
+            Log.e("Perms!!!","perms was granted");
+        }
+
         mHandler = new Handler();
 
         // Use this check to determine whether BLE is supported on the device.  Then you can
