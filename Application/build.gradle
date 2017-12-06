@@ -61,4 +61,15 @@ android {
 
     }
 
+    lintOptions {
+        disable 'AppCompatResource'
+        abortOnError false
+    }
+
+}
+
+// Add appStart task for easy compilation and launching.
+task appStart(type: Exec, dependsOn: 'installDebug') {
+    // linux 
+    commandLine 'adb', 'shell', 'am', 'start', '-n', 'com.example.android.bluetoothlegatt/.DeviceScanActivity'
 }
